@@ -12,7 +12,8 @@ public interface UserRepo extends JpaRepository<User, String> {
 
     @Query(value = "SELECT name, salary FROM user_salary " +
             "WHERE salary > :min AND salary < :max " +
-            "ORDER BY :sort ASC LIMIT :limit OFFSET :offset ",
+            "ORDER BY :sort ASC " +
+            "LIMIT :limit OFFSET :offset ",
             nativeQuery = true
             )
     List<User> getUsers(@Param("min") Double min,
