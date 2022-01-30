@@ -1,15 +1,14 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.model.RequestError;
 import com.example.demo.model.Result;
 import com.example.demo.repository.User;
 import com.example.demo.repository.UserRepo;
 import lombok.NoArgsConstructor;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,12 +28,11 @@ public class SweController {
             @RequestParam(name = "limit", defaultValue = "1000") Integer limit,
             @RequestParam(name = "sort", defaultValue = "") String sort
     ) {
-        try {
-             repo.getUsers(minSal, maxSal, offset, limit, sort);
-
             return new Result(repo.getUsers(minSal, maxSal, offset, limit, sort));
-        } catch (Exception e) {
-            return new Result(e.getMessage());
-        }
+    }
+
+    @PostMapping(path = "/upload")
+    public void upload() {
+
     }
 }

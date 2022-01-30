@@ -1,4 +1,8 @@
 
+GET http://localhost:8080/swe/api/users?min=1000&max=4000&limit=20&offset=0&sort
+Content-Type: application/json
 
-GET http://localhost:8080/swe/api/users?min=1000&max=4000&limit=20&offset=0&sort=name
+###
+
+GET http://localhost:8080/swe/api/users?min=10aa00&max=4000&limit=2a0&offset=qq0&sor
 Content-Type: application/json
