@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -27,21 +28,36 @@ public class CsvFileService {
         CSVParser parser = new CSVParser();
 
         new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))
-                .lines().forEach(line -> {
+                .lines()
+                .skip(1)
+                .forEach(line -> {
                     String[] params = new String[0];
                     try {
                         params = parser.parseLine(line);
                     } catch (IOException e) {
+                        System.out.println("Ex Message: " + e.getMessage());
+                        System.out.println("Ex Cause: " + e.getCause());
                         e.printStackTrace();
                     }
                     users.add(new User(params[0], Double.parseDouble(params[1])));
                 });
 
-
-
-        repo.saveAllAndFlush(users);
+        saveUsers(users);
 
         return true;
+    }
 
+    private void saveUsers(List<User> users) {
+
+        int batchSize = 5000;
+
+        for (int i = 0; i < users.size() / batchSize + 1; i++) {
+            int fromIndex = i * batchSize;
+            int toIndex = Math.min(i * batchSize + batchSize, users.size());
+
+            List<User> sublist = users.subList(fromIndex, toIndex);
+
+            repo.saveAllAndFlush(sublist);
+        }
     }
 }
